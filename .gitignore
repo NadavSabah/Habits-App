@@ -82,3 +82,6 @@ workbox-*.js
 out/
 .nuxt/
 .vuepress/dist/
+
+#PAT
+.git-credentials
