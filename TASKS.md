@@ -593,7 +593,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 6.4: Create Skip Service
 **Subtasks:**
-- [ ] 1. Create `backend/src/services/skip.service.ts`:
+- [x] 1. Create `backend/src/services/skip.service.ts`:
    - Import `prisma` from utils
    - Create `createSkip` async function:
      - Accept `userId: string`, `habitId: string`, `data: { date: string, reason?: string }`
@@ -615,7 +615,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 6.5: Create Skip Controller
 **Subtasks:**
-- [ ] 1. Create `backend/src/controllers/skip.controller.ts`:
+- [x] 1. Create `backend/src/controllers/skip.controller.ts`:
    - Import `Response` from express
    - Import `AuthRequest` from middleware
    - Import `skipService` from services
@@ -637,7 +637,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 6.6: Create Skip Routes
 **Subtasks:**
-- [ ] 1. Create `backend/src/routes/skips.routes.ts`:
+- [x] 1. Create `backend/src/routes/skips.routes.ts`:
    - Import `Router` from express
    - Import skip controller
    - Import `authenticate` middleware
