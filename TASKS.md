@@ -652,14 +652,14 @@ This document breaks down the code design into detailed, actionable tasks for Cu
    - Define `DELETE /skips/:id` route:
      - Use `skipController.delete`
    - Export router
-
+****
 ---
 
 ## Phase 7: Backend Implementation - Statistics
 
 ### Task 7.1: Create Analytics Service
 **Subtasks:**
-- [ ] 1. Create `backend/src/services/analytics.service.ts`:
+- [x] 1. Create `backend/src/services/analytics.service.ts`:
    - Import `prisma` from utils
    - Create `calculateStreak` helper function:
      - Accept completions and skips arrays
@@ -697,7 +697,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 7.2: Create Statistics Controller
 **Subtasks:**
-- [ ] 1. Create `backend/src/controllers/statistics.controller.ts`:
+- [x] 1. Create `backend/src/controllers/statistics.controller.ts`:
    - Import `Response` from express
    - Import `AuthRequest` from middleware
    - Import `analyticsService` from services
@@ -713,7 +713,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 7.3: Create Statistics Routes
 **Subtasks:**
-- [ ] 1. Create `backend/src/routes/statistics.routes.ts`:
+- [x] 1. Create `backend/src/routes/statistics.routes.ts`:
    - Import `Router` from express
    - Import statistics controller
    - Import `authenticate` middleware
