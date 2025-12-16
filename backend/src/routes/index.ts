@@ -7,14 +7,24 @@
 
 import { Router } from 'express';
 import authRoutes from './auth.routes';
+import habitRoutes from './habits.routes';
+import completionRoutes from './completions.routes';
 
 const router = Router();
 
 // Authentication routes
 router.use('/auth', authRoutes);
 
+// Habit routes
+router.use('/habits', habitRoutes);
+
+// Completion routes (mounted at /habits to match API structure)
+router.use('/habits', completionRoutes);
+
 // Additional routes will be mounted here as they are created
 // Example:
-// router.use('/habits', habitRoutes);
+// router.use('/habits', skipRoutes);
+// router.use('/statistics', statisticsRoutes);
+// router.use('/notifications', notificationRoutes);
 
 export default router;

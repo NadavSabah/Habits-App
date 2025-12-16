@@ -553,7 +553,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 6.2: Create Completion Controller
 **Subtasks:**
-- [ ] 1. Create `backend/src/controllers/completion.controller.ts`:
+- [x] 1. Create `backend/src/controllers/completion.controller.ts`:
    - Import `Response` from express
    - Import `AuthRequest` from middleware
    - Import `completionService` from services
@@ -575,7 +575,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 6.3: Create Completion Routes
 **Subtasks:**
-- [ ] 1. Create `backend/src/routes/completions.routes.ts`:
+- [x] 1. Create `backend/src/routes/completions.routes.ts`:
    - Import `Router` from express
    - Import completion controller
    - Import `authenticate` middleware
