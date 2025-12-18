@@ -731,8 +731,8 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 8.1: Generate VAPID Keys
 **Subtasks:**
-- [ ] 1. Install web-push if not already: `npm install web-push`
-- [ ] 2. Create script or run command to generate VAPID keys:
+- [x] 1. Install web-push if not already: `npm install web-push`
+- [x] 2. Create script or run command to generate VAPID keys:
    - Run: `npx web-push generate-vapid-keys`
    - Copy public key to `VAPID_PUBLIC_KEY` in `.env`
    - Copy private key to `VAPID_PRIVATE_KEY` in `.env`
@@ -740,7 +740,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 8.2: Create Push Notification Service
 **Subtasks:**
-- [ ] 1. Create `backend/src/services/push-notification.service.ts`:
+- [x] 1. Create `backend/src/services/push-notification.service.ts`:
    - Import `webpush` from `web-push`
    - Import `prisma` from utils
    - Import `format` from `date-fns` (install if needed: `npm install date-fns`)
@@ -765,7 +765,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 8.3: Create Notification Controller
 **Subtasks:**
-- [ ] 1. Create `backend/src/controllers/notification.controller.ts`:
+- [x] 1. Create `backend/src/controllers/notification.controller.ts`:
    - Import `Response` from express
    - Import `AuthRequest` from middleware
    - Import `prisma` from utils
@@ -785,7 +785,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 8.4: Create Notification Routes
 **Subtasks:**
-- [ ] 1. Create `backend/src/routes/notifications.routes.ts`:
+- [x] 1. Create `backend/src/routes/notifications.routes.ts`:
    - Import `Router` from express
    - Import notification controller
    - Import `authenticate` middleware
@@ -801,15 +801,15 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 8.5: Set Up Cron Job for Notifications (Optional)
 **Subtasks:**
-- [ ] 1. Install cron library: `npm install node-cron` and `npm install @types/node-cron --save-dev`
-- [ ] 2. Create `backend/src/services/cron.service.ts`:
+- [x] 1. Install cron library: `npm install node-cron` and `npm install @types/node-cron --save-dev`
+- [x] 2. Create `backend/src/services/cron.service.ts`:
    - Import `cron` from `node-cron`
    - Import `pushNotificationService` from services
    - Create function to start cron jobs:
      - Schedule job to run every minute: `cron.schedule('* * * * *', ...)`
      - Call `pushNotificationService.checkAndSendReminders()`
    - Export function
-- [ ] 3. Call cron service startup in `backend/src/server.ts`
+- [x] 3. Call cron service startup in `backend/src/server.ts`
 
 ---
 

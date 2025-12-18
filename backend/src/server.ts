@@ -6,6 +6,7 @@
 
 import dotenv from 'dotenv';
 import app from './app';
+import { startCronJobs } from './services/cron.service';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -17,6 +18,9 @@ const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
   console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  
+  // Start cron jobs for scheduled tasks (e.g., push notifications)
+  startCronJobs();
 });
 
 // Error handling for server startup
