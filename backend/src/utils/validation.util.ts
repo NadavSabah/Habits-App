@@ -38,12 +38,8 @@ export const createHabitSchema = z.object({
     .string()
     .max(500, 'Description must be less than 500 characters')
     .optional(),
-  category: z.enum(['MORNING', 'EVENING', 'OTHER'], {
-    errorMap: () => ({ message: 'Category must be MORNING, EVENING, or OTHER' }),
-  }),
-  frequency: z.enum(['DAILY', 'WEEKLY'], {
-    errorMap: () => ({ message: 'Frequency must be DAILY or WEEKLY' }),
-  }),
+  category: z.enum(['MORNING', 'EVENING', 'OTHER']),
+  frequency: z.enum(['DAILY', 'WEEKLY']),
   timesPerWeek: z
     .number()
     .int()

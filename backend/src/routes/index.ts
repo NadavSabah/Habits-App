@@ -12,6 +12,7 @@ import completionRoutes from './completions.routes';
 import skipRoutes from './skips.routes';
 import habitStatisticsRoutes from './habit-statistics.routes';
 import userStatisticsRoutes from './user-statistics.routes';
+import notificationRoutes from './notifications.routes';
 
 const router = Router();
 
@@ -33,8 +34,7 @@ router.use('/habits', habitStatisticsRoutes);
 // User statistics routes (mounted at /statistics for user stats)
 router.use('/statistics', userStatisticsRoutes);
 
-// Additional routes will be mounted here as they are created
-// Example:
-// router.use('/notifications', notificationRoutes);
+// Notification routes
+router.use('/notifications', notificationRoutes);
 
 export default router;

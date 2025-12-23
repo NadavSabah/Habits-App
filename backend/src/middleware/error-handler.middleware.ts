@@ -79,9 +79,9 @@ export const errorHandler: ErrorRequestHandler = (
     statusCode = 400;
     message = 'Validation failed';
     details = {
-      errors: err.errors.map((error) => ({
-        path: error.path.join('.'),
-        message: error.message,
+      errors: err.issues.map((issue) => ({
+        path: issue.path.join('.'),
+        message: issue.message,
       })),
     };
   }
