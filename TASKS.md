@@ -817,14 +817,14 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 9.1: Create Main Routes File
 **Subtasks:**
-- [ ] 1. Create `backend/src/routes/index.ts`:
+- [x] 1. Create `backend/src/routes/index.ts`:
    - Import `Router` from express
    - Import all route modules:
      - `authRoutes` from `./auth.routes`
      - `habitRoutes` from `./habits.routes`
      - `completionRoutes` from `./completions.routes`
      - `skipRoutes` from `./skips.routes`
-     - `statisticsRoutes` from `./statistics.routes`
+     - `statisticsRoutes` from `./statistics.routes` (implemented as `habit-statistics.routes` and `user-statistics.routes`)
      - `notificationRoutes` from `./notifications.routes`
    - Create main router: `const router = Router()`
    - Mount all routes:
@@ -832,8 +832,8 @@ This document breaks down the code design into detailed, actionable tasks for Cu
      - `router.use('/habits', habitRoutes)`
      - `router.use('/habits', completionRoutes)`
      - `router.use('/habits', skipRoutes)`
-     - `router.use('/habits', statisticsRoutes)`
-     - `router.use('/statistics', statisticsRoutes)` (for user stats)
+     - `router.use('/habits', statisticsRoutes)` (implemented as habitStatisticsRoutes)
+     - `router.use('/statistics', statisticsRoutes)` (for user stats - implemented as userStatisticsRoutes)
      - `router.use('/notifications', notificationRoutes)`
    - Export router as default
 
@@ -843,7 +843,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 10.1: Create Frontend Type Definitions
 **Subtasks:**
-- [ ] 1. Create `frontend/src/types/index.ts`:
+- [x] 1. Create `frontend/src/types/index.ts`:
    - Define `HabitCategory` type: `'MORNING' | 'EVENING' | 'OTHER'`
    - Define `HabitFrequency` type: `'DAILY' | 'WEEKLY'`
    - Define `User` interface:
@@ -864,6 +864,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
    - Define `UpdateHabitDto` type:
      - `Partial<CreateHabitDto>`
    - Export all types
+   - **Bonus:** Also includes `UserStatistics`, `CreateCompletionDto`, `CreateSkipDto`, `AuthResponse`, and `ApiError` types
 
 ---
 
@@ -871,7 +872,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 11.1: Create API Client
 **Subtasks:**
-- [ ] 1. Create `frontend/src/services/api.ts`:
+- [x] 1. Create `frontend/src/services/api.ts`:
    - Import `axios` from `axios`
    - Get `VITE_API_URL` from environment
    - Create axios instance:
@@ -887,17 +888,19 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 11.2: Create Auth Service
 **Subtasks:**
-- [ ] 1. Create `frontend/src/services/authService.ts`:
+- [x] 1. Create `frontend/src/services/authService.ts`:
    - Import `api` from `./api`
    - Import `User` type
    - Create `register` async function:
      - Accept `email`, `password`, `name?` parameters
      - POST to `/auth/register`
      - Return `{ user, token }`
+     - Save token and user to localStorage
    - Create `login` async function:
      - Accept `email`, `password` parameters
      - POST to `/auth/login`
      - Return `{ user, token }`
+     - Save token and user to localStorage
    - Create `getMe` async function:
      - GET `/auth/me`
      - Return user object
@@ -907,7 +910,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 11.3: Create Habit Service
 **Subtasks:**
-- [ ] 1. Create `frontend/src/services/habitService.ts`:
+- [x] 1. Create `frontend/src/services/habitService.ts`:
    - Import `api` from `./api`
    - Import `Habit`, `CreateHabitDto`, `UpdateHabitDto` types
    - Create `getAll` async function:
@@ -933,7 +936,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 11.4: Create Completion Service
 **Subtasks:**
-- [ ] 1. Create `frontend/src/services/completionService.ts`:
+- [x] 1. Create `frontend/src/services/completionService.ts`:
    - Import `api` from `./api`
    - Import `HabitCompletion` type
    - Create `create` async function:
@@ -947,13 +950,13 @@ This document breaks down the code design into detailed, actionable tasks for Cu
      - Return `HabitCompletion[]`
    - Create `delete` async function:
      - Accept `id: string`
-     - DELETE `/completions/${id}`
+     - DELETE `/habits/completions/${id}`
      - Return void
    - Export service object
 
 ### Task 11.5: Create Skip Service
 **Subtasks:**
-- [ ] 1. Create `frontend/src/services/skipService.ts`:
+- [x] 1. Create `frontend/src/services/skipService.ts`:
    - Import `api` from `./api`
    - Import `HabitSkip` type
    - Create `create` async function:
@@ -966,27 +969,27 @@ This document breaks down the code design into detailed, actionable tasks for Cu
      - Return `HabitSkip[]`
    - Create `delete` async function:
      - Accept `id: string`
-     - DELETE `/skips/${id}`
+     - DELETE `/habits/skips/${id}`
      - Return void
    - Export service object
 
 ### Task 11.6: Create Statistics Service
 **Subtasks:**
-- [ ] 1. Create `frontend/src/services/statisticsService.ts`:
+- [x] 1. Create `frontend/src/services/statisticsService.ts`:
    - Import `api` from `./api`
-   - Import `HabitStatistics` type
+   - Import `HabitStatistics` and `UserStatistics` types
    - Create `getHabitStatistics` async function:
      - Accept `habitId: string`
      - GET `/habits/${habitId}/statistics`
      - Return `HabitStatistics`
    - Create `getUserStatistics` async function:
      - GET `/statistics`
-     - Return user statistics object
+     - Return `UserStatistics`
    - Export service object
 
 ### Task 11.7: Create Push Notification Service
 **Subtasks:**
-- [ ] 1. Create `frontend/src/services/pushNotificationService.ts`:
+- [x] 1. Create `frontend/src/services/pushNotificationService.ts`:
    - Import `api` from `./api`
    - Create `getVapidKey` async function:
      - GET `/notifications/vapid-key`
