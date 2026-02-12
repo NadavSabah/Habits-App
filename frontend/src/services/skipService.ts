@@ -42,8 +42,8 @@ export const getAll = async (
   const queryString = params.toString();
   const url = `/habits/${habitId}/skips${queryString ? `?${queryString}` : ''}`;
   
-  const response = await api.get<HabitSkip[]>(url);
-  return response.data;
+  const response = await api.get<{ skips: HabitSkip[] }>(url);
+  return response.data.skips;
 };
 
 /**

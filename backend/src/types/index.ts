@@ -5,6 +5,17 @@
  * backend-specific types for the application.
  */
 
+import type { Request } from 'express';
+import type { z } from 'zod';
+import {
+  registerSchema,
+  loginSchema,
+  createHabitSchema,
+  updateHabitSchema,
+  completionSchema,
+  skipSchema,
+} from '../utils/validation.util';
+
 // Export all types from Prisma Client
 export * from '@prisma/client';
 
@@ -123,5 +134,36 @@ export interface PushNotificationPayload {
   habitId?: string;
   icon?: string;
   badge?: string;
-  data?: Record<string, any>;
+  data?: Record<string, unknown>;
 }
+
+/**
+ * Extended Request with authentication properties
+ * Used to attach user information to the request object after authentication
+ */
+export interface AuthRequest extends Request {
+  userId?: string;
+  user?: {
+    id: string;
+    email: string;
+    name: string | null;
+  };
+}
+
+/**
+ * Push subscription keys (p256dh and auth) for Web Push
+ */
+export interface PushSubscriptionKeys {
+  p256dh: string;
+  auth: string;
+}
+
+/**
+ * Validation input types (inferred from Zod schemas)
+ */
+export type RegisterInput = z.infer<typeof registerSchema>;
+export type LoginInput = z.infer<typeof loginSchema>;
+export type CreateHabitInput = z.infer<typeof createHabitSchema>;
+export type UpdateHabitInput = z.infer<typeof updateHabitSchema>;
+export type CompletionInput = z.infer<typeof completionSchema>;
+export type SkipInput = z.infer<typeof skipSchema>;

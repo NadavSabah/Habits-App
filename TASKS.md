@@ -1019,7 +1019,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 12.1: Create Auth Store
 **Subtasks:**
-- [ ] 1. Create `frontend/src/store/authStore.ts`:
+- [x] 1. Create `frontend/src/store/authStore.ts`:
    - Import `create` from `zustand`
    - Import `User` type
    - Import `authService` from services
@@ -1052,7 +1052,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 12.2: Create Habit Store
 **Subtasks:**
-- [ ] 1. Create `frontend/src/store/habitStore.ts`:
+- [x] 1. Create `frontend/src/store/habitStore.ts`:
    - Import `create` from `zustand`
    - Import habit-related types
    - Import habit services
@@ -1100,7 +1100,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 13.1: Create Button Component
 **Subtasks:**
-- [ ] 1. Create `frontend/src/components/common/Button.tsx`:
+- [x] 1. Create `frontend/src/components/common/Button.tsx`:
    - Define `ButtonProps` interface:
      - `children: React.ReactNode`
      - `onClick?: () => void`
@@ -1116,7 +1116,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 13.2: Create Input Component
 **Subtasks:**
-- [ ] 1. Create `frontend/src/components/common/Input.tsx`:
+- [x] 1. Create `frontend/src/components/common/Input.tsx`:
    - Define `InputProps` interface extending HTML input props
    - Create functional component:
      - Apply Tailwind styling
@@ -1125,7 +1125,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 13.3: Create Modal Component
 **Subtasks:**
-- [ ] 1. Create `frontend/src/components/common/Modal.tsx`:
+- [x] 1. Create `frontend/src/components/common/Modal.tsx`:
    - Use Headless UI Dialog or create custom modal
    - Define `ModalProps` interface:
      - `isOpen: boolean`
@@ -1143,7 +1143,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 13.4: Create Loading Spinner Component
 **Subtasks:**
-- [ ] 1. Create `frontend/src/components/common/LoadingSpinner.tsx`:
+- [x] 1. Create `frontend/src/components/common/LoadingSpinner.tsx`:
    - Create functional component:
      - Render animated spinner using Tailwind or CSS
      - Accept optional `size` prop
@@ -1156,7 +1156,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 14.1: Create Login Form Component
 **Subtasks:**
-- [ ] 1. Create `frontend/src/components/auth/LoginForm.tsx`:
+- [x] 1. Create `frontend/src/components/auth/LoginForm.tsx`:
    - Import `useState` from React
    - Import `useAuthStore` from store
    - Import `Button`, `Input` components
@@ -1176,7 +1176,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 14.2: Create Register Form Component
 **Subtasks:**
-- [ ] 1. Create `frontend/src/components/auth/RegisterForm.tsx`:
+- [x] 1. Create `frontend/src/components/auth/RegisterForm.tsx`:
    - Similar structure to LoginForm
    - Add `name` field (optional)
    - Call `register` from store
@@ -1184,7 +1184,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 14.3: Create Protected Route Component
 **Subtasks:**
-- [ ] 1. Create `frontend/src/components/auth/ProtectedRoute.tsx`:
+- [x] 1. Create `frontend/src/components/auth/ProtectedRoute.tsx`:
    - Import `Navigate` from react-router-dom
    - Import `useAuthStore` from store
    - Define `ProtectedRouteProps`:
@@ -1201,7 +1201,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 15.1: Create Habit Card Component
 **Subtasks:**
-- [ ] 1. Create `frontend/src/components/habits/HabitCard.tsx`:
+- [x] 1. Create `frontend/src/components/habits/HabitCard.tsx`:
    - Import `Habit` type
    - Define `HabitCardProps`:
      - `habit: Habit`
@@ -1217,7 +1217,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 15.2: Create Habit List Component
 **Subtasks:**
-- [ ] 1. Create `frontend/src/components/habits/HabitList.tsx`:
+- [x] 1. Create `frontend/src/components/habits/HabitList.tsx`:
    - Import `useHabitStore` from store
    - Import `HabitCard` component
    - Import `useEffect` from React
@@ -1232,7 +1232,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 15.3: Create Habit Form Component
 **Subtasks:**
-- [ ] 1. Create `frontend/src/components/habits/HabitForm.tsx`:
+- [x] 1. Create `frontend/src/components/habits/HabitForm.tsx`:
    - Import `useState`, `FormEvent` from React
    - Import `HabitCategory`, `HabitFrequency`, `CreateHabitDto` types
    - Import `useHabitStore` from store
@@ -1260,7 +1260,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 15.4: Create Habit Category Filter Component
 **Subtasks:**
-- [ ] 1. Create `frontend/src/components/habits/HabitCategoryFilter.tsx`:
+- [x] 1. Create `frontend/src/components/habits/HabitCategoryFilter.tsx`:
    - Import `HabitCategory` type
    - Define `HabitCategoryFilterProps`:
      - `selectedCategory: HabitCategory | null`
@@ -1277,7 +1277,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 15.5: Create Habit Detail Component
 **Subtasks:**
-- [ ] 1. Create `frontend/src/components/habits/HabitDetail.tsx`:
+- [x] 1. Create `frontend/src/components/habits/HabitDetail.tsx`:
    - Import `Habit` type
    - Import `HabitCalendar` component (will create later)
    - Import `StatisticsPanel` component (will create later)
@@ -1296,7 +1296,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 16.1: Create Calendar Day Component
 **Subtasks:**
-- [ ] 1. Create `frontend/src/components/calendar/CalendarDay.tsx`:
+- [x] 1. Create `frontend/src/components/calendar/CalendarDay.tsx`:
    - Import `Date` type
    - Define `CalendarDayProps`:
      - `date: Date`
@@ -1317,7 +1317,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 16.2: Create Habit Calendar Component
 **Subtasks:**
-- [ ] 1. Create `frontend/src/components/calendar/HabitCalendar.tsx`:
+- [x] 1. Create `frontend/src/components/calendar/HabitCalendar.tsx`:
    - Import `useState` from React
    - Import `format`, `startOfMonth`, `endOfMonth`, `eachDayOfInterval`, `isSameDay`, `addMonths`, `subMonths` from date-fns
    - Import `Habit`, `HabitCompletion`, `HabitSkip` types
@@ -1344,9 +1344,16 @@ This document breaks down the code design into detailed, actionable tasks for Cu
      - Apply Tailwind styling
    - Export component
 
+**Implementation notes (done with 16.2):**
+- [x] Added `fetchSkips` to habit store (and types); `fetchCompletions`/`fetchSkips` used by HabitCalendar.
+- [x] Added `removeCompletion(habitId, date)` and `removeSkip(habitId, date)` to store for calendar day toggle.
+- [x] Unwrapped API responses: `completionService.getAll` returns `response.data.completions`; `skipService.getAll` returns `response.data.skips`.
+- [x] HabitCalendar: stable selectors (EMPTY_COMPLETIONS/EMPTY_SKIPS) and stable `monthKey` in useEffect deps to avoid infinite loop.
+- [x] `HabitCalendarProps.disableFetch` and `HabitDetailProps.disableCalendarFetch` for showcase (mock habit); ComponentShowcasePage passes these so no 404 for `detail-1`.
+
 ### Task 16.3: Create Calendar View Component
 **Subtasks:**
-- [ ] 1. Create `frontend/src/components/calendar/CalendarView.tsx`:
+- [x] 1. Create `frontend/src/components/calendar/CalendarView.tsx`:
    - Import `HabitCalendar` component
    - Import `useHabitStore` from store
    - Create component:

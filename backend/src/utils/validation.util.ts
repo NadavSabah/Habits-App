@@ -91,13 +91,3 @@ export const skipSchema = z.object({
   reason: z.string().max(500, 'Reason must be less than 500 characters').optional(),
 });
 
-/**
- * Type inference helpers
- */
-export type RegisterInput = z.infer<typeof registerSchema>;
-export type LoginInput = z.infer<typeof loginSchema>;
-export type CreateHabitInput = z.infer<typeof createHabitSchema>;
-export type UpdateHabitInput = z.infer<typeof updateHabitSchema>;
-export type CompletionInput = z.infer<typeof completionSchema>;
-export type SkipInput = z.infer<typeof skipSchema>;
-

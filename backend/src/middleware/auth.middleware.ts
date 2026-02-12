@@ -4,22 +4,10 @@
  * Handles JWT token verification and user authentication for protected routes.
  */
 
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
+import type { AuthRequest } from '../types';
 import { verifyToken } from '../utils/jwt.util';
 import { prisma } from '../utils/prisma';
-
-/**
- * Extended Request interface with authentication properties
- * Used to attach user information to the request object after authentication
- */
-export interface AuthRequest extends Request {
-  userId?: string;
-  user?: {
-    id: string;
-    email: string;
-    name: string | null;
-  };
-}
 
 /**
  * Authentication middleware

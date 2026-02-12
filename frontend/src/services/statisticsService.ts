@@ -1,5 +1,5 @@
 import api from './api';
-import { HabitStatistics, UserStatistics } from '../types';
+import type { HabitStatistics, UserStatistics } from '../types';
 
 /**
  * Statistics Service

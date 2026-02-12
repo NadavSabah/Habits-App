@@ -6,7 +6,7 @@
 
 import { prisma } from '../utils/prisma';
 import { Habit } from '../types';
-import { CreateHabitInput, UpdateHabitInput } from '../utils/validation.util';
+import type { CreateHabitInput, UpdateHabitInput } from '../types';
 
 /**
  * Get all habits for a user

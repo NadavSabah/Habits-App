@@ -4,7 +4,8 @@
  * Axios instance configured for the backend API with authentication interceptors
  */
 
-import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
+import axios from 'axios';
+import type { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
 // Get API URL from environment variables
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';

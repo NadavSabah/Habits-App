@@ -5,6 +5,7 @@
  */
 
 import * as webpush from 'web-push';
+import type { PushSubscriptionKeys } from '../types';
 import { prisma } from '../utils/prisma';
 import { format, startOfToday, startOfTomorrow } from 'date-fns';
 
@@ -136,7 +137,7 @@ export const checkAndSendReminders = async (): Promise<void> => {
 export const createOrUpdateSubscription = async (
   userId: string,
   endpoint: string,
-  keys: { p256dh: string; auth: string },
+  keys: PushSubscriptionKeys,
   habitId?: string | null
 ): Promise<{ isUpdate: boolean }> => {
   // Check if subscription already exists for this endpoint

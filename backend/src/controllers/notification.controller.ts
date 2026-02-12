@@ -5,7 +5,7 @@
  */
 
 import { Response } from 'express';
-import { AuthRequest } from '../middleware/auth.middleware';
+import type { AuthRequest } from '../types';
 import { habitService } from '../services/habit.service';
 import { pushNotificationService } from '../services/push-notification.service';
 

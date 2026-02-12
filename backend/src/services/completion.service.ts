@@ -6,7 +6,7 @@
 
 import { prisma } from '../utils/prisma';
 import { HabitCompletion } from '../types';
-import { CompletionInput } from '../utils/validation.util';
+import type { CompletionInput } from '../types';
 
 /**
  * Create a new completion for a habit

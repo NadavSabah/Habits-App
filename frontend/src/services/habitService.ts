@@ -11,8 +11,8 @@ import type { Habit, CreateHabitDto, UpdateHabitDto } from '../types';
  * Get all habits for the authenticated user
  */
 export const getAll = async (): Promise<Habit[]> => {
-  const response = await api.get<Habit[]>('/habits');
-  return response.data;
+  const response = await api.get<{ habits: Habit[] }>('/habits');
+  return response.data.habits;
 };
 
 /**
@@ -27,8 +27,8 @@ export const getById = async (id: string): Promise<Habit> => {
  * Create a new habit
  */
 export const create = async (data: CreateHabitDto): Promise<Habit> => {
-  const response = await api.post<Habit>('/habits', data);
-  return response.data;
+  const response = await api.post<{ message: string; habit: Habit }>('/habits', data);
+  return response.data.habit;
 };
 
 /**

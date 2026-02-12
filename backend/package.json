@@ -10,11 +10,16 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
+    "prisma:seed": "prisma db seed",
+    "hash-password": "ts-node scripts/hash-password.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "devDependencies": {
     "@prisma/client": "^7.2.0",
     "@types/bcrypt": "^6.0.0",

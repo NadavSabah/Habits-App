@@ -5,7 +5,7 @@
  */
 
 import { Response } from 'express';
-import { AuthRequest } from '../middleware/auth.middleware';
+import type { AuthRequest } from '../types';
 import { completionService } from '../services/completion.service';
 
 /**

@@ -6,7 +6,7 @@
 
 import { prisma } from '../utils/prisma';
 import { HabitSkip } from '../types';
-import { SkipInput } from '../utils/validation.util';
+import type { SkipInput } from '../types';
 
 /**
  * Create a new skip for a habit

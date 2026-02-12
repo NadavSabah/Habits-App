@@ -42,8 +42,8 @@ export const getAll = async (
   const queryString = params.toString();
   const url = `/habits/${habitId}/completions${queryString ? `?${queryString}` : ''}`;
   
-  const response = await api.get<HabitCompletion[]>(url);
-  return response.data;
+  const response = await api.get<{ completions: HabitCompletion[] }>(url);
+  return response.data.completions;
 };
 
 /**

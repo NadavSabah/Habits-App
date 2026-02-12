@@ -194,4 +194,189 @@ export interface PushUnsubscribeDto {
   endpoint: string;
 }
 
+/**
+ * Auth State Interface
+ * Defines the shape of the authentication store
+ * Includes both state properties and action methods (standard Zustand pattern)
+ */
+export interface AuthState {
+  // State
+  user: User | null;
+  token: string | null;
+  isAuthenticated: boolean;
+  loading: boolean;
+  error: string | null;
 
+  // Actions
+  login: (email: string, password: string) => Promise<void>;
+  register: (email: string, password: string, name?: string) => Promise<void>;
+  logout: () => void;
+  checkAuth: () => Promise<void>;
+  clearError: () => void;
+}
+
+/**
+ * Habit State Interface
+ * Defines the shape of the habit store
+ */
+export interface HabitState {
+  // State
+  habits: Habit[];
+  selectedHabit: Habit | null;
+  completions: Record<string, HabitCompletion[]>; // key: habitId, value: completions array
+  skips: Record<string, HabitSkip[]>; // key: habitId, value: skips array
+  statistics: Record<string, HabitStatistics>; // key: habitId, value: statistics
+  loading: boolean;
+  error: string | null;
+
+  // Actions
+  fetchHabits: () => Promise<void>;
+  fetchHabitById: (id: string) => Promise<void>;
+  createHabit: (data: CreateHabitDto) => Promise<Habit>;
+  updateHabit: (id: string, data: UpdateHabitDto) => Promise<Habit>;
+  deleteHabit: (id: string) => Promise<void>;
+  fetchCompletions: (habitId: string, startDate?: string, endDate?: string) => Promise<void>;
+  fetchSkips: (habitId: string, startDate?: string, endDate?: string) => Promise<void>;
+  markComplete: (habitId: string, data: CreateCompletionDto) => Promise<HabitCompletion>;
+  markSkipped: (habitId: string, data: CreateSkipDto) => Promise<HabitSkip>;
+  removeCompletion: (habitId: string, date: string) => Promise<void>;
+  removeSkip: (habitId: string, date: string) => Promise<void>;
+  fetchStatistics: (habitId: string) => Promise<void>;
+  filterByCategory: (category: HabitCategory | null) => Habit[];
+  setSelectedHabit: (habit: Habit | null) => void;
+  clearError: () => void;
+}
+
+/**
+ * Button component props
+ * Variants match Design/README.md: primary (indigo), secondary (gray), success (green "Mark Done"), danger (red).
+ */
+export interface ButtonProps {
+  children: React.ReactNode;
+  onClick?: () => void;
+  type?: 'button' | 'submit' | 'reset';
+  variant?: 'primary' | 'secondary' | 'success' | 'danger';
+  disabled?: boolean;
+  className?: string;
+}
+
+/**
+ * Input component props.
+ * Extends HTML input attributes; optional label and error for Design/README.md (label above, helper/error below).
+ */
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label?: string;
+  error?: string;
+}
+
+/**
+ * Modal component props.
+ */
+export interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title?: string;
+  children: React.ReactNode;
+}
+
+/**
+ * Loading spinner component props.
+ */
+export interface LoadingSpinnerProps {
+  size?: 'sm' | 'md' | 'lg';
+}
+
+/**
+ * Protected route component props.
+ * Wraps content that requires authentication; redirects to login if not authenticated.
+ */
+export interface ProtectedRouteProps {
+  children: React.ReactNode;
+}
+
+/**
+ * Habit card component props.
+ */
+export interface HabitCardProps {
+  habit: Habit;
+  onClick?: () => void;
+  onEdit?: () => void;
+  onDelete?: () => void;
+  /** When provided, shows completed (✓) or not (○) for today. */
+  completedToday?: boolean;
+}
+
+/**
+ * Habit list component props.
+ */
+export interface HabitListProps {
+  /** When provided, filters habits by category. */
+  selectedCategory?: HabitCategory | null;
+  onHabitClick?: (habit: Habit) => void;
+  onHabitEdit?: (habit: Habit) => void;
+  onHabitDelete?: (habit: Habit) => void;
+}
+
+/**
+ * Habit form component props (create or edit).
+ */
+export interface HabitFormProps {
+  /** When provided, form is in edit mode and loads this habit. */
+  habitId?: string;
+  /** Called when form is submitted successfully or user cancels. */
+  onClose: () => void;
+}
+
+/**
+ * Habit category filter component props.
+ */
+export interface HabitCategoryFilterProps {
+  /** Currently selected category; null means "All". */
+  selectedCategory: HabitCategory | null;
+  /** Called when the user selects a category. */
+  onCategoryChange: (category: HabitCategory | null) => void;
+}
+
+/**
+ * Habit detail component props.
+ */
+export interface HabitDetailProps {
+  /** The habit to display. */
+  habit: Habit;
+  /** When true, calendar inside won't fetch completions/skips (e.g. for mock habits). */
+  disableCalendarFetch?: boolean;
+}
+
+/**
+ * Habit calendar component props (Phase 16).
+ */
+export interface HabitCalendarProps {
+  habit: Habit;
+  /** When true, skips fetching completions/skips (e.g. for mock habits on a showcase). */
+  disableFetch?: boolean;
+}
+
+/**
+ * Statistics panel component props (Phase 17).
+ */
+export interface StatisticsPanelProps {
+  habitId: string;
+}
+
+/**
+ * Calendar day status for completion/skip display.
+ */
+export type CalendarDayStatus = 'completed' | 'skipped' | 'pending';
+
+/**
+ * Calendar day component props (Phase 16).
+ */
+export interface CalendarDayProps {
+  date: Date;
+  status: CalendarDayStatus;
+  onClick: () => void;
+  /** Whether this day is today. */
+  isToday?: boolean;
+  /** Whether this day is in the currently displayed month. */
+  isCurrentMonth?: boolean;
+}
