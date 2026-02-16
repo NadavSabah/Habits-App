@@ -13,9 +13,12 @@
     "@headlessui/react": "^2.2.9",
     "axios": "^1.13.2",
     "date-fns": "^4.1.0",
+    "i18next": "^25.8.7",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-i18next": "^16.5.4",
     "react-router-dom": "^7.9.6",
+    "recharts": "^3.7.0",
     "zustand": "^5.0.8"
   },
   "devDependencies": {

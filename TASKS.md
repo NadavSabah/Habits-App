@@ -21,17 +21,18 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 - [Phase 15: Frontend Implementation - Habit Components](#phase-15-frontend-implementation---habit-components)
 - [Phase 16: Frontend Implementation - Calendar Components](#phase-16-frontend-implementation---calendar-components)
 - [Phase 17: Frontend Implementation - Statistics Components](#phase-17-frontend-implementation---statistics-components)
-- [Phase 18: Frontend Implementation - Notification Components](#phase-18-frontend-implementation---notification-components)
-- [Phase 19: Frontend Implementation - Pages](#phase-19-frontend-implementation---pages)
-- [Phase 20: Frontend Implementation - Routing & App Setup](#phase-20-frontend-implementation---routing--app-setup)
-- [Phase 21: PWA Implementation](#phase-21-pwa-implementation)
-- [Phase 22: Push Notifications Implementation](#phase-22-push-notifications-implementation)
-- [Phase 23: Utility Functions & Helpers](#phase-23-utility-functions--helpers)
-- [Phase 24: Styling & UI Polish](#phase-24-styling--ui-polish)
-- [Phase 25: Error Handling & Loading States](#phase-25-error-handling--loading-states)
-- [Phase 26: Testing & Validation](#phase-26-testing--validation)
-- [Phase 27: Environment Configuration & Deployment Prep](#phase-27-environment-configuration--deployment-prep)
-- [Phase 28: Documentation & Final Polish](#phase-28-documentation--final-polish)
+- [Phase 18: Frontend Implementation - Internationalization (i18n)](#phase-18-frontend-implementation---internationalization-i18n)
+- [Phase 19: Frontend Implementation - Notification Components](#phase-19-frontend-implementation---notification-components)
+- [Phase 20: Frontend Implementation - Pages](#phase-20-frontend-implementation---pages)
+- [Phase 21: Frontend Implementation - Routing & App Setup](#phase-21-frontend-implementation---routing--app-setup)
+- [Phase 22: PWA Implementation](#phase-22-pwa-implementation)
+- [Phase 23: Push Notifications Implementation](#phase-23-push-notifications-implementation)
+- [Phase 24: Utility Functions & Helpers](#phase-24-utility-functions--helpers)
+- [Phase 25: Styling & UI Polish](#phase-25-styling--ui-polish)
+- [Phase 26: Error Handling & Loading States](#phase-26-error-handling--loading-states)
+- [Phase 27: Testing & Validation](#phase-27-testing--validation)
+- [Phase 28: Environment Configuration & Deployment Prep](#phase-28-environment-configuration--deployment-prep)
+- [Phase 29: Documentation & Final Polish](#phase-29-documentation--final-polish)
 - [Notes for Implementation](#notes-for-implementation)
 
 ---
@@ -1368,7 +1369,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 17.1: Create Statistics Card Component
 **Subtasks:**
-- [ ] 1. Create `frontend/src/components/statistics/StatisticsCard.tsx`:
+- [x] 1. Create `frontend/src/components/statistics/StatisticsCard.tsx`:
    - Define `StatisticsCardProps`:
      - `title: string`
      - `value: string | number`
@@ -1382,8 +1383,8 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 17.2: Create Statistics Chart Component
 **Subtasks:**
-- [ ] 1. Install chart library (optional): `npm install recharts` or `chart.js`
-- [ ] 2. Create `frontend/src/components/statistics/StatisticsChart.tsx`:
+- [x] 1. Install chart library (optional): `npm install recharts` or `chart.js`
+- [x] 2. Create `frontend/src/components/statistics/StatisticsChart.tsx`:
    - Import chart library
    - Define `StatisticsChartProps`:
      - `data: Array<{ date: string, value: number }>`
@@ -1395,7 +1396,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 17.3: Create Statistics Panel Component
 **Subtasks:**
-- [ ] 1. Create `frontend/src/components/statistics/StatisticsPanel.tsx`:
+- [x] 1. Create `frontend/src/components/statistics/StatisticsPanel.tsx`:
    - Import `HabitStatistics` type
    - Import `StatisticsCard` component
    - Import `useHabitStore` from store
@@ -1418,11 +1419,62 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ---
 
-## Phase 18: Frontend Implementation - Notification Components
+## Phase 18: Frontend Implementation - Internationalization (i18n)
 
-### Task 18.1: Create Notification Settings Component
+### Task 18.1: Install and Configure i18n
 **Subtasks:**
-- [ ] 1. Create `frontend/src/components/notifications/NotificationSettings.tsx`:
+- [x] 1. Install i18n packages: `npm install i18next react-i18next` (in frontend)
+- [x] 2. Create `frontend/src/i18n.ts`:
+   - Import `i18n` from `i18next` and `initReactI18next` from `react-i18next`
+   - Call `i18n.use(initReactI18next).init(...)` with:
+     - `defaultNS`: e.g. `'common'`
+     - `fallbackLng`: e.g. `'en'`
+     - `supportedLngs`: e.g. `['en', 'he']`
+     - `resources`: load translation objects for each locale (or load via backend if preferred)
+   - Export configured `i18n` instance
+
+### Task 18.2: Create Locale Store
+**Subtasks:**
+- [x] 1. In `frontend/src/types/index.ts` define and export:
+   - `LocaleState` interface: `locale: string` (e.g. `'en' | 'he'`), `setLocale: (locale: string) => void`
+   - Optional: `SupportedLocale` type
+- [x] 2. Create `frontend/src/store/localeStore.ts`:
+   - Use Zustand `create<LocaleState>()`
+   - Initial `locale` from `localStorage.getItem('locale')` or default (e.g. `'en'`)
+   - `setLocale(locale)`: update state, persist to `localStorage`, call `i18n.changeLanguage(locale)`
+   - Export `useLocaleStore` hook
+
+### Task 18.3: Create Translation Files
+**Subtasks:**
+- [x] 1. Create `frontend/src/locales/en.json`:
+   - At least one namespace (e.g. `common`, `auth`, `habits`) with keys used by existing UI (e.g. buttons, labels, headings)
+- [x] 2. Create `frontend/src/locales/he.json` (or another locale):
+   - Same structure as `en.json` with translated values
+- [x] 3. In `frontend/src/i18n.ts` load these JSON resources for `en` and the other locale
+
+### Task 18.4: Wire i18n into App
+**Subtasks:**
+- [x] 1. In `frontend/src/main.tsx` (or entry that renders `<App />`):
+   - Import `./i18n` so i18n is initialized before React
+- [x] 2. On app init (or when locale store loads): call `i18n.changeLanguage(useLocaleStore.getState().locale)` so initial render uses saved locale
+- [x] 3. Subscribe to locale store (e.g. in a small effect or in a wrapper): when `setLocale` is called, `i18n.changeLanguage` is already invoked from the store; ensure components re-render (they will if using `useTranslation`)
+
+### Task 18.5: Create LanguageSwitcher Component
+**Subtasks:**
+- [x] 1. Create `frontend/src/components/common/LanguageSwitcher.tsx`:
+   - Import `useLocaleStore` from store
+   - Render dropdown or button group listing supported locales (e.g. English, עברית)
+   - On select, call `setLocale(selectedLocale)`
+   - Apply Tailwind styling consistent with [frontend/src/components/common](frontend/src/components/common)
+   - Export component
+
+---
+
+## Phase 19: Frontend Implementation - Notification Components
+
+### Task 19.1: Create Notification Settings Component
+**Subtasks:**
+- [x] 1. Create `frontend/src/components/notifications/NotificationSettings.tsx`:
    - Import `useState`, `useEffect` from React
    - Import `pushNotificationService` from services
    - Import `useHabitStore` from store
@@ -1447,9 +1499,9 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ---
 
-## Phase 19: Frontend Implementation - Pages
+## Phase 20: Frontend Implementation - Pages
 
-### Task 19.1: Create Login Page
+### Task 20.1: Create Login Page
 **Subtasks:**
 - [ ] 1. Create `frontend/src/pages/LoginPage.tsx`:
    - Import `LoginForm` component
@@ -1465,7 +1517,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
      - Apply Tailwind styling
    - Export component
 
-### Task 19.2: Create Register Page
+### Task 20.2: Create Register Page
 **Subtasks:**
 - [ ] 1. Create `frontend/src/pages/RegisterPage.tsx`:
    - Similar to LoginPage
@@ -1473,7 +1525,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
    - Link to login page
    - Export component
 
-### Task 19.3: Create Dashboard Page
+### Task 20.3: Create Dashboard Page
 **Subtasks:**
 - [ ] 1. Create `frontend/src/pages/DashboardPage.tsx`:
    - Import `ProtectedRoute` component
@@ -1493,7 +1545,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
      - Apply Tailwind styling
    - Export component
 
-### Task 19.4: Create Habit Detail Page
+### Task 20.4: Create Habit Detail Page
 **Subtasks:**
 - [ ] 1. Create `frontend/src/pages/HabitDetailPage.tsx`:
    - Import `useParams` from react-router-dom
@@ -1508,14 +1560,16 @@ This document breaks down the code design into detailed, actionable tasks for Cu
      - Show 404 if habit not found
    - Export component
 
-### Task 19.5: Create Settings Page
+### Task 20.5: Create Settings Page
 **Subtasks:**
 - [ ] 1. Create `frontend/src/pages/SettingsPage.tsx`:
    - Import `NotificationSettings` component
+   - Import `LanguageSwitcher` component
    - Import `useAuthStore` from store
    - Create component:
      - Render settings sections:
        - User profile section
+       - Language / locale section: render `LanguageSwitcher` so the user can change the app language
        - Notification settings section
        - Logout button
      - Apply Tailwind styling
@@ -1523,9 +1577,9 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ---
 
-## Phase 20: Frontend Implementation - Routing & App Setup
+## Phase 21: Frontend Implementation - Routing & App Setup
 
-### Task 20.1: Set Up React Router
+### Task 21.1: Set Up React Router
 **Subtasks:**
 - [ ] 1. Update `frontend/src/App.tsx`:
    - Import `BrowserRouter`, `Routes`, `Route`, `Navigate` from react-router-dom
@@ -1544,7 +1598,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
      - Add navigation component (optional)
    - Export App component
 
-### Task 20.2: Update Main Entry Point
+### Task 21.2: Update Main Entry Point
 **Subtasks:**
 - [ ] 1. Update `frontend/src/main.tsx`:
    - Import React and ReactDOM
@@ -1555,9 +1609,9 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ---
 
-## Phase 21: PWA Implementation
+## Phase 22: PWA Implementation
 
-### Task 21.1: Create Web App Manifest
+### Task 22.1: Create Web App Manifest
 **Subtasks:**
 - [ ] 1. Create `frontend/public/manifest.json`:
    - Add `name`: "Habits Tracker"
@@ -1577,7 +1631,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
    - Add `<link rel="manifest" href="/manifest.json">`
    - Add theme color meta tag
 
-### Task 21.2: Create Service Worker
+### Task 22.2: Create Service Worker
 **Subtasks:**
 - [ ] 1. Create `frontend/public/sw.js`:
    - Define cache name (e.g., 'habits-v1')
@@ -1598,7 +1652,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
    - Register service worker
    - Handle updates
 
-### Task 21.3: Create PWA Icons
+### Task 22.3: Create PWA Icons
 **Subtasks:**
 - [ ] 1. Create icon files in `frontend/public/icons/`:
    - `icon-192x192.png` (192x192 pixels)
@@ -1606,7 +1660,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
    - Use placeholder images or design actual icons
    - Ensure icons are properly formatted
 
-### Task 21.4: Configure Vite for PWA
+### Task 22.4: Configure Vite for PWA
 **Subtasks:**
 - [ ] 1. Install PWA plugin (optional): `npm install vite-plugin-pwa --save-dev`
 - [ ] 2. Update `frontend/vite.config.ts`:
@@ -1616,9 +1670,9 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ---
 
-## Phase 22: Push Notifications Implementation
+## Phase 23: Push Notifications Implementation
 
-### Task 22.1: Implement Push Notification Subscription in Frontend
+### Task 23.1: Implement Push Notification Subscription in Frontend
 **Subtasks:**
 - [ ] 1. Update `frontend/src/services/pushNotificationService.ts`:
    - Ensure all functions are implemented (from Phase 11.7)
@@ -1633,7 +1687,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
      - Return state and functions
    - Export hook
 
-### Task 22.2: Integrate Push Notifications in Components
+### Task 23.2: Integrate Push Notifications in Components
 **Subtasks:**
 - [ ] 1. Update `NotificationSettings` component:
    - Use `useNotifications` hook
@@ -1645,9 +1699,9 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ---
 
-## Phase 23: Utility Functions & Helpers
+## Phase 24: Utility Functions & Helpers
 
-### Task 23.1: Create Date Utilities
+### Task 24.1: Create Date Utilities
 **Subtasks:**
 - [ ] 1. Create `frontend/src/utils/dateUtils.ts`:
    - Import date-fns functions
@@ -1675,9 +1729,9 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ---
 
-## Phase 24: Styling & UI Polish
+## Phase 25: Styling & UI Polish
 
-### Task 24.1: Configure Tailwind Theme
+### Task 25.1: Configure Tailwind Theme
 **Subtasks:**
 - [ ] 1. Update `frontend/tailwind.config.js`:
    - Define custom colors
@@ -1703,9 +1757,9 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ---
 
-## Phase 25: Error Handling & Loading States
+## Phase 26: Error Handling & Loading States
 
-### Task 25.1: Implement Error Boundaries
+### Task 26.1: Implement Error Boundaries
 **Subtasks:**
 - [ ] 1. Create `frontend/src/components/common/ErrorBoundary.tsx`:
    - Create class component or use react-error-boundary library
@@ -1730,9 +1784,9 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ---
 
-## Phase 26: Testing & Validation
+## Phase 27: Testing & Validation
 
-### Task 26.1: Test Authentication Flow
+### Task 27.1: Test Authentication Flow
 **Subtasks:**
 - [ ] 1. Test user registration:
    - Valid data
@@ -1804,9 +1858,9 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ---
 
-## Phase 27: Environment Configuration & Deployment Prep
+## Phase 28: Environment Configuration & Deployment Prep
 
-### Task 27.1: Finalize Environment Variables
+### Task 28.1: Finalize Environment Variables
 **Subtasks:**
 - [ ] 1. Backend `.env`:
    - Set production `DATABASE_URL`
@@ -1836,9 +1890,9 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ---
 
-## Phase 28: Documentation & Final Polish
+## Phase 29: Documentation & Final Polish
 
-### Task 28.1: Update README
+### Task 29.1: Update README
 **Subtasks:**
 - [ ] 1. Add project description
 - [ ] 2. Add setup instructions

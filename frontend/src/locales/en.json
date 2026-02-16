@@ -1,0 +1,21 @@
+{
+  "appTitle": "Habits",
+  "login": "Log In",
+  "register": "Register",
+  "logout": "Log Out",
+  "email": "Email",
+  "password": "Password",
+  "name": "Name",
+  "settings": "Settings",
+  "language": "Language",
+  "notifications": "Notifications",
+  "habits": "Habits",
+  "createHabit": "Create habit",
+  "statistics": "Statistics",
+  "loading": "Loading…",
+  "save": "Save",
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "edit": "Edit",
+  "close": "Close"
+}

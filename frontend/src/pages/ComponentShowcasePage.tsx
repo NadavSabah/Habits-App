@@ -17,6 +17,10 @@ import { HabitList } from '../components/habits/HabitList';
 import { CalendarDay } from '../components/calendar/CalendarDay';
 import { HabitCalendar } from '../components/calendar/HabitCalendar';
 import { CalendarView } from '../components/calendar/CalendarView';
+import { StatisticsCard } from '../components/statistics/StatisticsCard';
+import { StatisticsChart } from '../components/statistics/StatisticsChart';
+import { StatisticsPanel } from '../components/statistics/StatisticsPanel';
+import { NotificationSettings } from '../components/notifications/NotificationSettings';
 import { useHabitStore } from '../store/habitStore';
 import type { Habit, CreateHabitDto, HabitCategory, HabitFrequency } from '../types';
 
@@ -79,6 +83,11 @@ export function ComponentShowcasePage() {
   const createHabitError = useHabitStore((state) => state.error);
   const clearError = useHabitStore((state) => state.clearError);
   const setSelectedHabit = useHabitStore((state) => state.setSelectedHabit);
+  const habits = useHabitStore((state) => state.habits);
+  const selectedHabit = useHabitStore((state) => state.selectedHabit);
+  const statisticsHabitId = selectedHabit?.id ?? habits[0]?.id;
+  /** Use real habit for detail/statistics when available so API calls succeed. */
+  const habitDetailHabit = selectedHabit ?? habits[0] ?? mockDetailHabit;
 
   const handleCreateHabit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -252,8 +261,94 @@ export function ComponentShowcasePage() {
         <h2 className="mb-6 text-2xl font-semibold text-[var(--color-text-heading)]">
           Habit detail
         </h2>
+        <p className="mb-4 text-sm text-[var(--color-text)] opacity-80">
+          Uses selected or first habit when logged in so calendar and statistics load real data.
+        </p>
         <div className="max-w-2xl">
-          <HabitDetail habit={mockDetailHabit} disableCalendarFetch />
+          <HabitDetail habit={habitDetailHabit} disableCalendarFetch />
+        </div>
+      </section>
+
+      {/* Statistics */}
+      <section className="mb-12">
+        <h2 className="mb-6 text-2xl font-semibold text-[var(--color-text-heading)]">
+          Statistics
+        </h2>
+        <p className="mb-4 text-sm text-[var(--color-text)] opacity-80">
+          StatisticsCard, StatisticsChart (line/bar), and StatisticsPanel (fetches by habit ID).
+        </p>
+        <h3 className="mb-3 text-lg font-medium text-[var(--color-text-heading)]">
+          Statistics cards
+        </h3>
+        <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <StatisticsCard title="Total Completions" value={42} />
+          <StatisticsCard title="Completion Rate" value="87%" subtitle="Based on expected vs completed" />
+          <StatisticsCard title="Current Streak" value={7} subtitle="days" />
+          <StatisticsCard
+            title="Total Time"
+            value="2 hr 15 min"
+            subtitle="Total time spent"
+            icon={<span aria-hidden>⏱</span>}
+          />
+        </div>
+        <h3 className="mb-3 text-lg font-medium text-[var(--color-text-heading)]">
+          Statistics chart (line / bar)
+        </h3>
+        <div className="mb-8 flex flex-col gap-6 sm:max-w-xl">
+          <StatisticsChart
+            type="line"
+            data={[
+              { date: 'Mon', value: 1 },
+              { date: 'Tue', value: 2 },
+              { date: 'Wed', value: 1 },
+              { date: 'Thu', value: 3 },
+              { date: 'Fri', value: 2 },
+              { date: 'Sat', value: 1 },
+              { date: 'Sun', value: 2 },
+            ]}
+          />
+          <StatisticsChart
+            type="bar"
+            data={[
+              { date: 'Mon', value: 1 },
+              { date: 'Tue', value: 2 },
+              { date: 'Wed', value: 1 },
+              { date: 'Thu', value: 3 },
+              { date: 'Fri', value: 2 },
+              { date: 'Sat', value: 1 },
+              { date: 'Sun', value: 2 },
+            ]}
+          />
+        </div>
+        <h3 className="mb-3 text-lg font-medium text-[var(--color-text-heading)]">
+          Statistics panel (by habit ID)
+        </h3>
+        <p className="mb-4 text-sm text-[var(--color-text)] opacity-80">
+          Uses a real habit from the store (selected habit or first in list). Log in and load habits above to see data.
+        </p>
+        <div className="max-w-3xl">
+          {statisticsHabitId ? (
+            <StatisticsPanel habitId={statisticsHabitId} />
+          ) : (
+            <div className="rounded-card border border-gray-200 bg-white p-6 shadow-sm">
+              <p className="text-sm text-[var(--color-text)]">
+                No habit selected. Log in (e.g. demo@example.com / password123), then select or create a habit above to see statistics here.
+              </p>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Notification settings */}
+      <section className="mb-12">
+        <h2 className="mb-6 text-2xl font-semibold text-[var(--color-text-heading)]">
+          Notification settings
+        </h2>
+        <p className="mb-4 text-sm text-[var(--color-text)] opacity-80">
+          Push notification permission and Subscribe / Unsubscribe. Requires backend and service worker for full flow.
+        </p>
+        <div className="max-w-xl">
+          <NotificationSettings />
         </div>
       </section>
 

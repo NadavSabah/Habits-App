@@ -18,7 +18,7 @@ const categoryOptions: { value: HabitCategory; label: string }[] = [
   { value: 'OTHER', label: 'Other' },
 ];
 
-const frequencyOptions: { value: Habit  Frequency; label: string }[] = [
+const frequencyOptions: { value: HabitFrequency; label: string }[] = [
   { value: 'DAILY', label: 'Daily' },
   { value: 'WEEKLY', label: 'Weekly' },
 ];

@@ -12,8 +12,8 @@ import type { HabitStatistics, UserStatistics } from '../types';
  * @returns Promise resolving to habit statistics
  */
 export const getHabitStatistics = async (habitId: string): Promise<HabitStatistics> => {
-  const response = await api.get<HabitStatistics>(`/habits/${habitId}/statistics`);
-  return response.data;
+  const response = await api.get<{ statistics: HabitStatistics }>(`/habits/${habitId}/statistics`);
+  return response.data.statistics;
 };
 
 /**
@@ -21,8 +21,8 @@ export const getHabitStatistics = async (habitId: string): Promise<HabitStatisti
  * @returns Promise resolving to user statistics
  */
 export const getUserStatistics = async (): Promise<UserStatistics> => {
-  const response = await api.get<UserStatistics>('/statistics');
-  return response.data;
+  const response = await api.get<{ statistics: UserStatistics }>('/statistics');
+  return response.data.statistics;
 };
 
 const statisticsService = {

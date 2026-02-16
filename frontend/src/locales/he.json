@@ -1,0 +1,21 @@
+{
+  "appTitle": "הרגלים",
+  "login": "התחבר",
+  "register": "הרשמה",
+  "logout": "התנתק",
+  "email": "אימייל",
+  "password": "סיסמה",
+  "name": "שם",
+  "settings": "הגדרות",
+  "language": "שפה",
+  "notifications": "התראות",
+  "habits": "הרגלים",
+  "createHabit": "צור הרגל",
+  "statistics": "סטטיסטיקות",
+  "loading": "טוען…",
+  "save": "שמור",
+  "cancel": "ביטול",
+  "delete": "מחק",
+  "edit": "ערוך",
+  "close": "סגור"
+}

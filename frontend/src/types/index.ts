@@ -5,6 +5,8 @@
  * Types are based on the backend Prisma schema and API responses.
  */
 
+import type { ReactNode } from 'react';
+
 /**
  * Habit Category Enu
  * Categories for organizing habits
@@ -364,6 +366,32 @@ export interface StatisticsPanelProps {
 }
 
 /**
+ * Statistics card component props (Phase 17).
+ */
+export interface StatisticsCardProps {
+  title: string;
+  value: string | number;
+  subtitle?: string;
+  icon?: ReactNode;
+}
+
+/**
+ * Data point for statistics chart (Phase 17).
+ */
+export interface StatisticsChartDataPoint {
+  date: string;
+  value: number;
+}
+
+/**
+ * Statistics chart component props (Phase 17).
+ */
+export interface StatisticsChartProps {
+  data: StatisticsChartDataPoint[];
+  type?: 'line' | 'bar';
+}
+
+/**
  * Calendar day status for completion/skip display.
  */
 export type CalendarDayStatus = 'completed' | 'skipped' | 'pending';
@@ -379,4 +407,17 @@ export interface CalendarDayProps {
   isToday?: boolean;
   /** Whether this day is in the currently displayed month. */
   isCurrentMonth?: boolean;
+}
+
+/**
+ * Supported locale codes (Phase 18 - i18n).
+ */
+export type SupportedLocale = 'en' | 'he';
+
+/**
+ * Locale store state (Phase 18 - i18n).
+ */
+export interface LocaleState {
+  locale: SupportedLocale;
+  setLocale: (locale: SupportedLocale) => void;
 }
