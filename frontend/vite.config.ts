@@ -1,10 +1,24 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
-  // PWA plugin configuration can be added here later (see Phase 21)
-  // Example: import { VitePWA } from 'vite-plugin-pwa'
-  // plugins: [react(), VitePWA({ ... })]
+  plugins: [
+    react(),
+    VitePWA({
+      registerType: 'autoUpdate',
+      injectRegister: false,
+      srcDir: 'src',
+      filename: 'sw.ts',
+      manifest: false,
+      strategies: 'injectManifest',
+      injectManifest: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+        swSrc: 'src/sw.ts',
+        minify: false,
+        rollupFormat: 'iife',
+      },
+    }),
+  ],
 })

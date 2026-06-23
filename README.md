@@ -103,13 +103,22 @@ npx web-push generate-vapid-keys
 
 Copy the public and private keys to your `.env` file.
 
-### 6. Run database migrations
+### 6. Run database migrations and seed
 
 ```bash
 cd backend
-npm run prisma:generate
-npm run prisma:migrate
+npm run prisma:generate   # Generate Prisma Client from schema (types for DB access)
+npm run prisma:migrate    # Create/update database tables to match schema
+npm run prisma:seed       # Insert demo user (demo@example.com) and sample habits
 ```
+
+The seed creates a **demo user** and sample habits. You can log in with:
+- **Email:** `demo@example.com`
+- **Password:** `password123`
+
+Without running the seed, the demo user does not exist, so that login will fail. You can still create a new account via the Sign up page.
+
+**Can't log in after seeding?** The **backend must be running**. In a separate terminal run `cd backend && npm run dev`. If you see *"Port 3000 is already in use"*, the backend did not start. Free the port by running `npm run kill-port` (from the `backend/` folder), then run `npm run dev` again.
 
 ### 7. Start the development servers
 
@@ -147,13 +156,22 @@ habits-app/
 
 ```bash
 cd backend
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run start        # Start production server
-npm run type-check   # Type check
-npm run lint         # Lint code
-npm run prisma:studio # Open Prisma Studio
+npm run dev            # Start development server
+npm run kill-port      # Kill process on port 3000 (when "port already in use")
+npm run build          # Build for production
+npm run start          # Start production server
+npm run type-check     # Type check
+npm run lint           # Lint code
 ```
+
+**Prisma (run from `backend/`):**
+
+| Command | What it does |
+|--------|----------------|
+| `npm run prisma:generate` | Generate Prisma Client from schema (after schema changes) |
+| `npm run prisma:migrate` | Apply migrations and update DB schema (`prisma migrate dev`) |
+| `npm run prisma:seed` | Seed DB with demo user and sample habits |
+| `npm run prisma:studio` | Open Prisma Studio to view/edit data in the browser |
 
 ### Frontend Commands
 

@@ -197,6 +197,31 @@ export interface PushUnsubscribeDto {
 }
 
 /**
+ * Return value of the useNotifications hook
+ */
+export interface UseNotificationsReturn {
+  permission: NotificationPermission | null;
+  subscription: PushSubscription | null;
+  loading: boolean;
+  isSupported: boolean;
+  subscribe: (habitId?: string) => Promise<void>;
+  unsubscribe: () => Promise<void>;
+}
+
+/**
+ * Date value accepted by date utility functions (Date instance or ISO / yyyy-MM-dd string)
+ */
+export type DateInput = Date | string;
+
+/**
+ * Result of a client-side field validation
+ */
+export interface ValidationResult {
+  valid: boolean;
+  error?: string;
+}
+
+/**
  * Auth State Interface
  * Defines the shape of the authentication store
  * Includes both state properties and action methods (standard Zustand pattern)

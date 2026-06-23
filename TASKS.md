@@ -35,6 +35,20 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 - [Phase 29: Documentation & Final Polish](#phase-29-documentation--final-polish)
 - [Notes for Implementation](#notes-for-implementation)
 
+## Implementation Progress (summary)
+
+| Phase | Status |
+|-------|--------|
+| **1–21** | Complete — project setup, backend API, frontend app, routing, i18n |
+| **22** | Complete — PWA manifest, service worker, icons, Vite PWA config |
+| **23** | Complete — push service, `useNotifications` hook, `NotificationSettings` integration |
+| **24** | Complete — `dateUtils`, `calculations`, `validation` |
+| **25** | Partial — global styles in `index.css`; full theme polish pending |
+| **26** | Not started — ErrorBoundary, loading/error review |
+| **27** | Not started — manual testing checklist |
+| **28** | Partial — `.env.example` files done; production env + build verification pending |
+| **29** | Partial — README mostly done; deployment docs + code review pending |
+
 ---
 
 ## Phase 1: Project Setup & Initial Configuration
@@ -1503,7 +1517,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 20.1: Create Login Page
 **Subtasks:**
-- [ ] 1. Create `frontend/src/pages/LoginPage.tsx`:
+- [x] 1. Create `frontend/src/pages/LoginPage.tsx`:
    - Import `LoginForm` component
    - Import `useNavigate` from react-router-dom
    - Import `useAuthStore` from store
@@ -1519,7 +1533,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 20.2: Create Register Page
 **Subtasks:**
-- [ ] 1. Create `frontend/src/pages/RegisterPage.tsx`:
+- [x] 1. Create `frontend/src/pages/RegisterPage.tsx`:
    - Similar to LoginPage
    - Use `RegisterForm` component
    - Link to login page
@@ -1527,8 +1541,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 20.3: Create Dashboard Page
 **Subtasks:**
-- [ ] 1. Create `frontend/src/pages/DashboardPage.tsx`:
-   - Import `ProtectedRoute` component
+- [x] 1. Create `frontend/src/pages/DashboardPage.tsx`:
    - Import `HabitList` component
    - Import `HabitCategoryFilter` component
    - Import `HabitForm` component
@@ -1547,7 +1560,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 20.4: Create Habit Detail Page
 **Subtasks:**
-- [ ] 1. Create `frontend/src/pages/HabitDetailPage.tsx`:
+- [x] 1. Create `frontend/src/pages/HabitDetailPage.tsx`:
    - Import `useParams` from react-router-dom
    - Import `HabitDetail` component
    - Import `useHabitStore` from store
@@ -1562,7 +1575,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 20.5: Create Settings Page
 **Subtasks:**
-- [ ] 1. Create `frontend/src/pages/SettingsPage.tsx`:
+- [x] 1. Create `frontend/src/pages/SettingsPage.tsx`:
    - Import `NotificationSettings` component
    - Import `LanguageSwitcher` component
    - Import `useAuthStore` from store
@@ -1581,7 +1594,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 21.1: Set Up React Router
 **Subtasks:**
-- [ ] 1. Update `frontend/src/App.tsx`:
+- [x] 1. Update `frontend/src/App.tsx`:
    - Import `BrowserRouter`, `Routes`, `Route`, `Navigate` from react-router-dom
    - Import all page components
    - Import `ProtectedRoute` component
@@ -1600,20 +1613,23 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 21.2: Update Main Entry Point
 **Subtasks:**
-- [ ] 1. Update `frontend/src/main.tsx`:
+- [x] 1. Update `frontend/src/main.tsx`:
    - Import React and ReactDOM
    - Import App component
    - Import CSS file (Tailwind)
    - Render App to root element
-   - Check authentication on mount (optional)
+   - Check authentication on mount
+   - Register service worker at `/sw.js` with update handling
 
 ---
 
 ## Phase 22: PWA Implementation
 
+> **Status: COMPLETE** (Tasks 22.1–22.4)
+
 ### Task 22.1: Create Web App Manifest
 **Subtasks:**
-- [ ] 1. Create `frontend/public/manifest.json`:
+- [x] 1. Create `frontend/public/manifest.json`:
    - Add `name`: "Habits Tracker"
    - Add `short_name`: "Habits"
    - Add `description`: "Track your daily habits"
@@ -1623,60 +1639,59 @@ This document breaks down the code design into detailed, actionable tasks for Cu
    - Add `theme_color`: "#3b82f6"
    - Add `orientation`: "portrait"
    - Add `icons` array:
-     - Icon 192x192 (create placeholder or actual icon)
-     - Icon 512x512 (create placeholder or actual icon)
+     - `/icons/icon-192x192.png` (192x192)
+     - `/icons/icon-512x512.png` (512x512)
      - Set `type: "image/png"`
      - Set `purpose: "any maskable"`
-- [ ] 2. Link manifest in `frontend/index.html`:
+- [x] 2. Link manifest in `frontend/index.html`:
    - Add `<link rel="manifest" href="/manifest.json">`
    - Add theme color meta tag
 
 ### Task 22.2: Create Service Worker
 **Subtasks:**
-- [ ] 1. Create `frontend/public/sw.js`:
-   - Define cache name (e.g., 'habits-v1')
-   - Add install event listener:
-     - Open cache
-     - Cache essential files (/, /index.html, CSS, JS)
-   - Add fetch event listener:
-     - Try cache first, fallback to network
-     - Return cached response or fetch
+- [x] 1. Create service worker (`frontend/src/sw.ts`, built to `/sw.js` via Vite PWA):
+   - Workbox precaching via `precacheAndRoute(self.__WB_MANIFEST)` (install + cache essential files)
+   - `cleanupOutdatedCaches()` on activate
    - Add push event listener:
      - Parse notification data
      - Show notification with title, body, icon
    - Add notificationclick event listener:
      - Close notification
-     - Open app window to relevant habit
-- [ ] 2. Register service worker in `frontend/src/main.tsx` or separate file:
+     - Open app window to relevant habit (via `data.url`)
+   - Add message listener for `SKIP_WAITING` (update flow)
+- [x] 2. Register service worker in `frontend/src/main.tsx`:
    - Check if service workers are supported
-   - Register service worker
-   - Handle updates
+   - Register service worker at `/sw.js`
+   - Handle updates (`updatefound` → `SKIP_WAITING` → reload on `controllerchange`)
 
 ### Task 22.3: Create PWA Icons
 **Subtasks:**
-- [ ] 1. Create icon files in `frontend/public/icons/`:
+- [x] 1. Create icon files in `frontend/public/icons/`:
    - `icon-192x192.png` (192x192 pixels)
    - `icon-512x512.png` (512x512 pixels)
-   - Use placeholder images or design actual icons
-   - Ensure icons are properly formatted
+   - Icons referenced in `manifest.json` at `/icons/icon-192x192.png` and `/icons/icon-512x512.png`
 
 ### Task 22.4: Configure Vite for PWA
 **Subtasks:**
-- [ ] 1. Install PWA plugin (optional): `npm install vite-plugin-pwa --save-dev`
-- [ ] 2. Update `frontend/vite.config.ts`:
-   - Import PWA plugin
-   - Configure plugin with manifest and service worker options
-   - Or manually configure service worker registration
+- [x] 1. Install PWA plugin: `npm install vite-plugin-pwa --save-dev`
+- [x] 2. Update `frontend/vite.config.ts`:
+   - Import `VitePWA` plugin
+   - `strategies: 'injectManifest'` with `src/sw.ts` as source
+   - `manifest: false` (uses existing `public/manifest.json`)
+   - `injectRegister: false` (manual registration in `main.tsx`)
+   - `registerType: 'autoUpdate'`
 
 ---
 
 ## Phase 23: Push Notifications Implementation
 
+> **Progress:** Complete (Tasks 23.1–23.2).
+
 ### Task 23.1: Implement Push Notification Subscription in Frontend
 **Subtasks:**
-- [ ] 1. Update `frontend/src/services/pushNotificationService.ts`:
-   - Ensure all functions are implemented (from Phase 11.7)
-- [ ] 2. Create hook `frontend/src/hooks/useNotifications.ts`:
+- [x] 1. Update `frontend/src/services/pushNotificationService.ts`:
+   - All functions implemented: `getVapidKey`, `subscribe`, `unsubscribe`, `requestPermission`, `subscribeToPush`, `isPushSupported`, `getPermissionStatus`
+- [x] 2. Create hook `frontend/src/hooks/useNotifications.ts`:
    - Import `useState`, `useEffect` from React
    - Import `pushNotificationService` from services
    - Create hook:
@@ -1689,13 +1704,13 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 23.2: Integrate Push Notifications in Components
 **Subtasks:**
-- [ ] 1. Update `NotificationSettings` component:
-   - Use `useNotifications` hook
-   - Implement subscribe/unsubscribe UI
-   - Handle permission requests
-- [ ] 2. Update service worker registration:
-   - Ensure push event handler is set up
-   - Ensure notification click handler is set up
+- [x] 1. Update `NotificationSettings` component:
+   - [x] Use `useNotifications` hook
+   - [x] Implement subscribe/unsubscribe UI
+   - [x] Handle permission requests
+- [x] 2. Update service worker registration:
+   - [x] Ensure push event handler is set up (`src/sw.ts`)
+   - [x] Ensure notification click handler is set up (`src/sw.ts`)
 
 ---
 
@@ -1703,7 +1718,7 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 24.1: Create Date Utilities
 **Subtasks:**
-- [ ] 1. Create `frontend/src/utils/dateUtils.ts`:
+- [x] 1. Create `frontend/src/utils/dateUtils.ts`:
    - Import date-fns functions
    - Create `formatDate(date: Date | string): string` function
    - Create `isToday(date: Date | string): boolean` function
@@ -1711,17 +1726,17 @@ This document breaks down the code design into detailed, actionable tasks for Cu
    - Create `getDaysInMonth(year: number, month: number): number` function
    - Export all functions
 
-### Task 23.2: Create Calculation Utilities
+### Task 24.2: Create Calculation Utilities
 **Subtasks:**
-- [ ] 1. Create `frontend/src/utils/calculations.ts`:
+- [x] 1. Create `frontend/src/utils/calculations.ts`:
    - Create `calculateStreak(completions: HabitCompletion[], skips: HabitSkip[]): number` function
    - Create `calculateCompletionRate(completions: number, skips: number): number` function
    - Create `formatDuration(minutes: number): string` function (e.g., "1h 30m")
    - Export all functions
 
-### Task 23.3: Create Validation Utilities
+### Task 24.3: Create Validation Utilities
 **Subtasks:**
-- [ ] 1. Create `frontend/src/utils/validation.ts`:
+- [x] 1. Create `frontend/src/utils/validation.ts`:
    - Create email validation function
    - Create password validation function (min length, etc.)
    - Create time format validation (HH:mm)
@@ -1741,11 +1756,11 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 24.2: Create Global Styles
 **Subtasks:**
-- [ ] 1. Update `frontend/src/index.css`:
-   - Ensure Tailwind directives are present
-   - Add custom CSS variables if needed
-   - Add global styles (body, etc.)
-   - Add utility classes
+- [x] 1. Update `frontend/src/index.css`:
+   - [x] Tailwind directives present (`@import "tailwindcss"`)
+   - [x] Custom CSS variables (`@theme` + `:root`)
+   - [x] Global styles (body, links, etc.)
+   - [ ] Add utility classes (optional extras)
 
 ### Task 24.3: Apply Consistent Styling
 **Subtasks:**
@@ -1869,7 +1884,9 @@ This document breaks down the code design into detailed, actionable tasks for Cu
    - Set VAPID keys
 - [ ] 2. Frontend `.env`:
    - Set production `VITE_API_URL`
-- [ ] 3. Create `.env.example` files with placeholders
+- [x] 3. Create `.env.example` files with placeholders:
+   - `backend/.env.example`
+   - `frontend/.env.example`
 
 ### Task 27.2: Build for Production
 **Subtasks:**
@@ -1894,11 +1911,11 @@ This document breaks down the code design into detailed, actionable tasks for Cu
 
 ### Task 29.1: Update README
 **Subtasks:**
-- [ ] 1. Add project description
-- [ ] 2. Add setup instructions
-- [ ] 3. Add environment variable documentation
-- [ ] 4. Add API documentation (or link to it)
-- [ ] 5. Add deployment instructions
+- [x] 1. Add project description
+- [x] 2. Add setup instructions
+- [x] 3. Add environment variable documentation
+- [x] 4. Add API documentation (endpoint list in README)
+- [ ] 5. Add deployment instructions (currently links to `DEVELOPMENT_PLAN.md` only)
 
 ### Task 28.2: Code Comments
 **Subtasks:**

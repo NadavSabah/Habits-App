@@ -5,85 +5,39 @@
  * Shows permission status and Subscribe / Unsubscribe actions.
  */
 
-import { useState, useEffect } from 'react';
-import pushNotificationService from '../../services/pushNotificationService';
+import { useState } from 'react';
+import { useNotifications } from '../../hooks/useNotifications';
 import { useHabitStore } from '../../store/habitStore';
 import { Button } from '../common/Button';
 
 export function NotificationSettings() {
-  const [permission, setPermission] = useState<NotificationPermission | null>(null);
-  const [isSubscribed, setIsSubscribed] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const { permission, subscription, loading, isSupported, subscribe, unsubscribe } =
+    useNotifications();
   const [error, setError] = useState<string | null>(null);
 
   const habits = useHabitStore((state) => state.habits);
 
-  useEffect(() => {
-    const permissionStatus = pushNotificationService.getPermissionStatus();
-    setPermission(permissionStatus ?? null);
-
-    if (!pushNotificationService.isPushSupported()) {
-      return;
-    }
-    navigator.serviceWorker.ready
-      .then((registration) => registration.pushManager.getSubscription())
-      .then((subscription) => {
-        setIsSubscribed(!!subscription);
-      })
-      .catch(() => {
-        setIsSubscribed(false);
-      });
-  }, []);
-
   const handleSubscribe = async () => {
-    if (!pushNotificationService.isPushSupported()) {
-      setError('Push notifications are not supported in this browser.');
-      return;
-    }
-    setLoading(true);
     setError(null);
     try {
-      await pushNotificationService.requestPermission();
-      const newPermission = pushNotificationService.getPermissionStatus();
-      setPermission(newPermission ?? null);
-      if (newPermission !== 'granted') {
-        setError('Permission denied. Enable notifications in your browser settings.');
-        setLoading(false);
-        return;
-      }
-      await pushNotificationService.subscribeToPush();
-      setIsSubscribed(true);
+      await subscribe();
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to subscribe to notifications.';
       setError(message);
-    } finally {
-      setLoading(false);
     }
   };
 
   const handleUnsubscribe = async () => {
-    if (!pushNotificationService.isPushSupported()) {
-      return;
-    }
-    setLoading(true);
     setError(null);
     try {
-      const registration = await navigator.serviceWorker.ready;
-      const subscription = await registration.pushManager.getSubscription();
-      if (subscription) {
-        await subscription.unsubscribe();
-        await pushNotificationService.unsubscribe(subscription.endpoint);
-        setIsSubscribed(false);
-      }
+      await unsubscribe();
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to unsubscribe.';
       setError(message);
-    } finally {
-      setLoading(false);
     }
   };
 
-  if (!pushNotificationService.isPushSupported()) {
+  if (!isSupported) {
     return (
       <section className="rounded-card border border-gray-200 bg-white p-6 shadow-sm">
         <h3 className="mb-2 text-sm font-semibold text-[var(--color-text-heading)]">
@@ -104,6 +58,8 @@ export function NotificationSettings() {
         : permission === 'default'
           ? 'Not set'
           : 'Unknown';
+
+  const isSubscribed = subscription != null;
 
   return (
     <section className="rounded-card border border-gray-200 bg-white p-6 shadow-sm">
